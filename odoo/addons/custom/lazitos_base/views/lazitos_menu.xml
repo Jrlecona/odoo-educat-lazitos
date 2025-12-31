@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <!-- Minimal menu example (safe placeholder) -->
+  <menuitem id="lazitos_root_menu" name="Lazitos" sequence="10"/>
+</odoo>

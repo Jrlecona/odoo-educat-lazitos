@@ -1,0 +1,53 @@
+services:
+  db:
+    image: postgres:15
+    container_name: lazitos_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-odoo}
+      POSTGRES_USER: ${POSTGRES_USER:-odoo}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-odoo}
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    networks:
+      - lazitos_net
+
+  odoo:
+    image: odoo:${ODOO_VERSION:-16.0}
+    container_name: lazitos_odoo
+    restart: unless-stopped
+    depends_on:
+      - db
+    ports:
+      - "${ODOO_PORT:-8069}:8069"
+    environment:
+      HOST: db
+      USER: ${POSTGRES_USER:-odoo}
+      PASSWORD: ${POSTGRES_PASSWORD:-odoo}
+    volumes:
+      # Odoo data
+      - ./odoo-data:/var/lib/odoo
+      # Odoo config (optional)
+      - ../../odoo/config/odoo.conf:/etc/odoo/odoo.conf:ro
+      # Custom addons
+      - ../../odoo/addons/custom:/mnt/extra-addons
+    networks:
+      - lazitos_net
+
+  # Optional reverse proxy (enable later)
+  nginx:
+    image: nginx:alpine
+    container_name: lazitos_nginx
+    restart: unless-stopped
+    depends_on:
+      - odoo
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - lazitos_net
+
+networks:
+  lazitos_net:
+    driver: bridge

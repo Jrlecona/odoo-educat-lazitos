@@ -1,0 +1,23 @@
+# Env
+.env
+
+# Odoo / Postgres persistent data (do not commit)
+odoo/data/
+infra/docker/postgres-data/
+infra/docker/odoo-data/
+
+# Logs
+*.log
+logs/
+infra/docker/logs/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+
+# Python
+__pycache__/
+*.pyc
