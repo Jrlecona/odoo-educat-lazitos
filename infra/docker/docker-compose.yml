@@ -31,6 +31,7 @@ services:
       - ../../odoo/config/odoo.conf:/etc/odoo/odoo.conf:ro
       # Custom addons
       - ../../odoo/addons/custom:/mnt/extra-addons
+      - ../../odoo/addons/thirdparty:/mnt/thirdparty-addons
     networks:
       - lazitos_net
 
